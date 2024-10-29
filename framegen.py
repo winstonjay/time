@@ -5,6 +5,7 @@ from string import Template
 HTML_TEMPLATE_PATH = Path("templates/base.template.html")
 CLOCK_SVG_TEMPLATE_PATH = Path("templates/clock.template.svg")
 
+
 def main():
     svg_template = load_template(path=CLOCK_SVG_TEMPLATE_PATH)
     html_template = load_template(path=HTML_TEMPLATE_PATH)
@@ -13,6 +14,7 @@ def main():
     with open("clock_frames.html", "w+") as fp:
         fp.write(html_template.safe_substitute(content=content))
     
+
 def generate_all_clock_frames(svg_template: Template, size: float, clock_radius: float) -> str:
     center = size / 2
     ticks = generate_ticks(center=center, inner_radius=clock_radius * 0.8, outer_radius=clock_radius * 0.95)
@@ -29,6 +31,7 @@ def generate_all_clock_frames(svg_template: Template, size: float, clock_radius:
         for hour in range(12)
         for minute in range(60)
     ])
+
 
 def calculate_hand_angles(hour, minute):
     hour_angle = 180 - ((hour % 12) * 30 + (minute / 60) * 30) # Hour hand moves 0.5 degrees per minute
