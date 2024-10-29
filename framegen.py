@@ -11,7 +11,7 @@ def main():
     html_template = load_template(path=HTML_TEMPLATE_PATH)
 
     content = generate_all_clock_frames(svg_template=svg_template, size=400, clock_radius=150)
-    with open("clock_frames.html", "w+") as fp:
+    with open("pages/clock-frames.html", "w+") as fp:
         fp.write(html_template.safe_substitute(content=content))
     
 
