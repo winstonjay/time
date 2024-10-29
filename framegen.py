@@ -5,6 +5,7 @@ from string import Template
 HTML_TEMPLATE_PATH = Path("templates/base.template.html")
 CLOCK_SVG_TEMPLATE_PATH = Path("templates/clock.template.svg")
 
+TITLE = "12 hours all at once / Even a stopped clock is right twice a day"
 
 def main():
     svg_template = load_template(path=CLOCK_SVG_TEMPLATE_PATH)
@@ -12,7 +13,7 @@ def main():
 
     content = generate_all_clock_frames(svg_template=svg_template, size=400, clock_radius=150)
     with open("pages/clock-frames.html", "w+") as fp:
-        fp.write(html_template.safe_substitute(content=content))
+        fp.write(html_template.safe_substitute(title=TITLE, content=content))
     
 
 def generate_all_clock_frames(svg_template: Template, size: float, clock_radius: float) -> str:
