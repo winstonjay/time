@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock Frames</title>
+    <style>
+        header { position: fixed; margin: 8px; }
+        h1 { font-size: 20px; background-color: white; margin: 0; }
+        body { margin: 0; }
+        main { padding-top: 50px; }
+        svg { margin: 4px; height: 150px; width: 150px; }
+        .container { display: flex; flex-wrap: wrap; justify-content: space-evenly; }
+
+        @media only screen and (max-width: 600px) {
+            svg { height: 100px; width: 100px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>12 hours all at once / Even a stopped clock is right twice a day</h1>
+    </header>
+    <main>
+        <div class="container">
+            $content
+        </div>
+    </main>
+    <script>
+        var lastTimeId;
+
+        function playPip(duration = 0.1, frequency = 1000) {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            // Set oscillator type and frequency
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime); // 1000 Hz for a neutral beep
+
+            // Control the volume for a fade-out effect
+            gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration); // Fade out over 0.1 seconds
+
+            // Connect oscillator to gain, then to the audio context's destination (speakers)
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            // Start and stop the oscillator to create the beep
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + duration); // Beep duration of 0.1 seconds
+        }
+
+        function highlightCurrentTime(scrolls = false) {
+            // Get current hour and minute
+            const now = new Date();
+            const hour = now.getHours() % 12;
+            const minute = now.getMinutes();
+    
+            // Format hour and minute to match your element IDs
+            const formattedHour = hour.toString().padStart(2, '0');
+            const formattedMinute = minute.toString().padStart(2, '0');
+    
+            // Construct the ID based on the current time
+            const currentTimeId = `time-${formattedHour}-${formattedMinute}`;
+            let frequency = 1174.66;
+            // playPip(duration = 0.1, frequency = frequency);
+            if (lastTimeId === currentTimeId) {
+                return;
+            }
+            lastTimeId = currentTimeId;
+
+
+            const svgElements = document.querySelectorAll('svg[id^="time-"]');
+            svgElements.forEach(element => element.style.backgroundColor = ''); // Reset background
+            
+            console.log(currentTimeId)
+            const currentTimeElement = document.getElementById(currentTimeId);
+            if (currentTimeElement) {
+                currentTimeElement.style.backgroundColor = 'yellow';
+
+                if (scrolls) {
+                    currentTimeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+
+
+
+        setTimeout(() => {
+            highlightCurrentTime(scrolls = true)
+            setInterval(highlightCurrentTime, 1000);
+        }, 500);
+    </script>
+</body>
+</html>

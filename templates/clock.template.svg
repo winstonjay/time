@@ -1,0 +1,13 @@
+<svg id="time-$hour-$minute" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 $size $size">
+    <g id="face">
+        <circle class="circle" cx="$center" cy="$center" r="$clock_radius" stroke="black" stroke-width="8" fill="none"/>
+        <text x="$center" y="390" font-size="36" text-anchor="middle">$hour:$minute</text>
+    </g>
+    <g id="ticks">$ticks</g>
+    <g id="hour">
+        <line x1="$center" y1="$center" x2="$hour_x2" y2="$hour_y2" stroke="black" stroke-width="9" stroke-linecap="round"/>
+    </g>
+    <g id="minute">
+        <line x1="$center" y1="$center" x2="$minute_x2" y2="$minute_y2" stroke="black" stroke-width="6" stroke-linecap="round" />
+    </g>
+</svg>
